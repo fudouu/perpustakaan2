@@ -20,8 +20,7 @@ class Siswa extends Model
     ];
 
     // Pastikan relasi ini juga ada biar manggil namanya lancar
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    public function user() {
+    return $this->belongsTo(User::class, 'user_id');
+}
 }

@@ -15,7 +15,7 @@ class PeminjamenTable
         return $table
             ->columns([
                 TextColumn::make('kode_peminjaman')
-                    ->label('Kode TRX')
+                    ->label('Kode Peminjaman')
                     ->searchable()
                     ->weight('bold'),
 

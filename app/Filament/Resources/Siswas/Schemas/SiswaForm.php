@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Siswas\Schemas;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Hidden; // Tambah import ini bray
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Grid;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,7 @@ class SiswaForm
                             ->relationship('user', 'nama_lengkap')
                             ->searchable()
                             ->preload()
-                            ->required() // Mencegah simpan jika belum terpilih
+                            ->required()
                             ->createOptionForm([
                                 TextInput::make('nama_lengkap')
                                     ->label('Nama Lengkap')
@@ -46,6 +47,11 @@ class SiswaForm
                                     ->password()
                                     ->required()
                                     ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
+
+                                // 🔥 FIX: PAKSA ROLE SISWA DI SINI 🔥
+                                // Pake Hidden biar gak bisa diganti-ganti dan gak muncul di UI
+                                Hidden::make('role')
+                                    ->default('siswa'),
                             ]),
 
                         TextInput::make('nis')

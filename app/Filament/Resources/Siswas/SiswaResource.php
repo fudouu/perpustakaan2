@@ -13,7 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-
+use Illuminate\Support\Facades\Auth;
 class SiswaResource extends Resource
 {
     protected static ?string $model = Siswa::class;
@@ -23,6 +23,15 @@ protected static string|\UnitEnum|null $navigationGroup = 'Data Master';    prot
 
     protected static ?string $modelLabel = 'Siswa';
     protected static ?string $pluralModelLabel = 'Data Siswa';
+
+    
+public static function canViewAny(): bool
+{
+    // Pakai titik dua dua kali (static call)
+    return Auth::check() && Auth::user()->role === 'admin';
+}
+
+
 
     public static function form(Schema $schema): Schema
     {

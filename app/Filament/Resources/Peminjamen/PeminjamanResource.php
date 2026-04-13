@@ -13,7 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-
+use Illuminate\Support\Facades\Auth;
 class PeminjamanResource extends Resource
 {
     protected static ?string $model = Peminjaman::class;
@@ -24,6 +24,14 @@ protected static string|\UnitEnum|null $navigationGroup = 'Transaksi';
 
     protected static ?string $modelLabel = 'Peminjaman';
     protected static ?string $pluralModelLabel = 'Peminjaman';
+
+
+public static function canViewAny(): bool
+{
+    // Pakai titik dua dua kali (static call)
+    return Auth::check() && Auth::user()->role === 'admin';
+}
+
 
     public static function form(Schema $schema): Schema
     {

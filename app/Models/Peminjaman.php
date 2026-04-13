@@ -3,41 +3,55 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Peminjaman extends Model
 {
     protected $fillable = [
-    'kode_peminjaman',
-    'siswa_id',
-    'buku_id',
-    'admin_id',
-    'tanggal_pinjam',
-    'batas_pengembalian',
-    'status',
-    'catatan',
-];
-    //
-    public function siswa()
+        'kode_peminjaman',
+        'siswa_id',
+        'buku_id',
+        'admin_id',
+        'tanggal_pinjam',
+        'batas_pengembalian',
+        'status',
+        'catatan',
+    ];
+
+    // Relasi ke Siswa
+    public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class);
     }
 
-    public function buku()
+    // Relasi ke Buku
+    public function buku(): BelongsTo
     {
         return $this->belongsTo(Buku::class);
     }
-    public function admin()
+
+    // Relasi ke Admin (User)
+    public function admin(): BelongsTo
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+    /**
+     * Booted function untuk menghandle logika otomatis
+     */
     protected static function booted()
     {
-        // Fungsi ini otomatis jalan SETELAH data Peminjaman baru berhasil disimpan
+        // OTOMATIS KURANGI STOK saat Peminjaman dibuat
         static::created(function ($peminjaman) {
-            $buku = $peminjaman->buku; // Ambil data buku yang dipinjam
-            
-            if ($buku) {
-                $buku->decrement('stok'); // Kurangi stok buku 1
+            if ($peminjaman->buku) {
+                $peminjaman->buku->decrement('stok');
+            }
+        });
+
+        // OPTIONAL: Jika data peminjaman dihapus (cancel), balikin stoknya
+        static::deleted(function ($peminjaman) {
+            if ($peminjaman->buku) {
+                $peminjaman->buku->increment('stok');
             }
         });
     }

@@ -27,12 +27,12 @@ class PengembaliansTable
                     ->label('Buku')
                     ->limit(20),
 
-                TextColumn::make('tanggal_kembali')
+                TextColumn::make('tanggal_kembali_aktual')
                     ->label('Tgl Kembali')
                     ->date('d M Y')
                     ->sortable(),
 
-                TextColumn::make('denda')
+                TextColumn::make('denda_dibayar')
                     ->label('Denda')
                     ->money('IDR')
                     ->color('danger'),

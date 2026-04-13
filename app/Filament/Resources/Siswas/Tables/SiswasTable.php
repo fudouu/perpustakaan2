@@ -14,24 +14,34 @@ class SiswasTable
     {
         return $table
             ->columns([
-                TextColumn::make('user_id')
-                    ->numeric()
+                // INI YANG DIUBAH: Menampilkan Username dari relasi User
+                TextColumn::make('user.username')
+                    ->label('Username')
+                    ->searchable()
                     ->sortable(),
+
                 TextColumn::make('nis')
+                    ->label('NIS')
                     ->searchable(),
+
                 TextColumn::make('kelas')
                     ->searchable(),
+
                 TextColumn::make('jurusan')
                     ->searchable(),
+
                 TextColumn::make('tanggal_lahir')
                     ->date()
                     ->sortable(),
+
                 TextColumn::make('status')
                     ->badge(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
